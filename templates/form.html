@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Player Ranking</title>
+	<style>
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 50px;
+		}
+
+		label {
+			font-size: 18px;
+			margin-bottom: 10px;
+		}
+
+		input[type="text"] {
+			padding: 8px;
+			font-size: 16px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			width: 100%;
+			margin-bottom: 20px;
+			box-sizing: border-box;
+		}
+
+		input[type="submit"] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			font-size: 18px;
+			cursor: pointer;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		.result {
+			margin-top: 30px;
+			font-size: 24px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>Player Ranking</h1>
+	<form method="post" action="">
+		<label for="move_positions">Move Positions:</label>
+		<input type="text" id="move_positions" name="move_positions">
+
+		<label for="tourneys_played">Tourneys Played:</label>
+		<input type="text" id="tourneys_played" name="tourneys_played">
+
+		<label for="player_age">Player Age:</label>
+		<input type="text" id="player_age" name="player_age">
+
+		<label for="move_direction">Move Direction:</label>
+		<input type="text" id="move_direction" name="move_direction">
+
+		<label for="ranking_points">Ranking Points:</label>
+		<input type="text" id="ranking_points" name="ranking_points">
+
+		<input type="submit" value="Submit">
+	</form>
+	<div class="result">
+		<?php
+			if(isset($_POST['move_positions']) && isset($_POST['tourneys_played']) && isset($_POST['player_age']) && isset($_POST['move_direction']) && isset($_POST['ranking_points'])) {
+				$move_positions = $_POST['move_positions'];
+				$tourneys_played = $_POST['tourneys_played'];
+				$player_age = $_POST['player_age'];
+				$move_direction = $_POST['move_direction'];
+				$ranking_points = $_POST['ranking_points'];
+
+				// Calculate player ranking based on input values
+				$player_ranking = $move_positions + ($tourneys_played * 10) + ($player_age * 5) + ($move_direction == 'up' ? 10 : -10) + $ranking_points;
+
+				echo 'Player Ranking: '.$player_ranking;
+			}
+		?>
+	</div>
+</body>
+</html>
+
+
