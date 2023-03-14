@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Player Ranking</title>
 	<style>
@@ -8,6 +9,8 @@
 			flex-direction: column;
 			align-items: center;
 			margin-top: 50px;
+			max-width: 400px;
+			margin: auto;
 		}
 
 		label {
@@ -50,43 +53,46 @@
 		}
 	</style>
 </head>
+
 <body>
 	<h1>Player Ranking</h1>
 	<form method="post" action="">
-		<label for="move_positions">Move Positions:</label>
-		<input type="text" id="move_positions" name="move_positions">
+		<label for="previous_rank_points">Previous rank positions</label>
+		<input type="text" id="previous_rank_points" name="previous_rank_points">
 
-		<label for="tourneys_played">Tourneys Played:</label>
-		<input type="text" id="tourneys_played" name="tourneys_played">
+		<label for="ranking_change">Ranking change</label>
+		<input type="text" id="ranking_change" name="ranking_change">
 
-		<label for="player_age">Player Age:</label>
+		<!-- <label for="player_age">Player Age:</label>
 		<input type="text" id="player_age" name="player_age">
 
 		<label for="move_direction">Move Direction:</label>
 		<input type="text" id="move_direction" name="move_direction">
 
 		<label for="ranking_points">Ranking Points:</label>
-		<input type="text" id="ranking_points" name="ranking_points">
+		<input type="text" id="ranking_points" name="ranking_points"> -->
 
 		<input type="submit" value="Submit">
 	</form>
 	<div class="result">
-		<?php
-			if(isset($_POST['move_positions']) && isset($_POST['tourneys_played']) && isset($_POST['player_age']) && isset($_POST['move_direction']) && isset($_POST['ranking_points'])) {
-				$move_positions = $_POST['move_positions'];
-				$tourneys_played = $_POST['tourneys_played'];
-				$player_age = $_POST['player_age'];
-				$move_direction = $_POST['move_direction'];
-				$ranking_points = $_POST['ranking_points'];
-
-				// Calculate player ranking based on input values
-				$player_ranking = $move_positions + ($tourneys_played * 10) + ($player_age * 5) + ($move_direction == 'up' ? 10 : -10) + $ranking_points;
-
-				echo 'Player Ranking: '.$player_ranking;
-			}
-		?>
 	</div>
+
+	<script>
+		const form = document.querySelector('form');
+		const result = document.querySelector('.result');
+
+		form.addEventListener('submit', e => {
+			e.preventDefault();
+			// go to /ratings endpoint
+			fetch('/ratings', {
+				method: 'POST',
+				body: new FormData(form)
+			}).then(response => response.json())
+				.then(data => {
+					result.innerHTML = `Player ranking is ${data.ranking}`;
+				});
+		});
+	</script>
 </body>
+
 </html>
-
-
